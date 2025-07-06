@@ -15,7 +15,7 @@ export default function MentorAvailability() {
   const token = localStorage.getItem("token");
 
   const fetchSlots = async () => {
-    const res = await fetch("http://localhost:5000/availability", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/availability`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -27,7 +27,7 @@ export default function MentorAvailability() {
   }, []);
 
   const addSlot = async () => {
-    const res = await fetch("http://localhost:5000/availability", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/availability`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

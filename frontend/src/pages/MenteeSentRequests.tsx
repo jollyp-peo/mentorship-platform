@@ -20,7 +20,7 @@ export default function MenteeSentRequests() {
   const navigate = useNavigate();
 
   const fetchSentRequests = async () => {
-    const res = await fetch('http://localhost:5000/requests/sent', {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/requests/sent`, {
       headers: {
         Authorization: `Bearer ${token}`,
       },

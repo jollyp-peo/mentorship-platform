@@ -5,6 +5,7 @@ import IncomingRequestCard from '../components/IncomingRequestCard';
 type RequestType = {
   id: number;
   mentee: {
+    id: number;
     firstName: string;
     lastName: string;
     email: string;
@@ -19,7 +20,7 @@ export default function MentorInbox() {
   const token = localStorage.getItem('token');
 
   const fetchRequests = async () => {
-    const res = await fetch('http://localhost:5000/requests/received', {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/requests/received`, {
       headers: { Authorization: `Bearer ${token}` },
     });
     const data = await res.json();
@@ -27,7 +28,7 @@ export default function MentorInbox() {
   };
 
   const handleAction = async (id: number, action: 'ACCEPTED' | 'REJECTED') => {
-    const res = await fetch(`http://localhost:5000/requests/${id}`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/requests/${id}`, {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json',

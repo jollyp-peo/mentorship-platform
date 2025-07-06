@@ -25,14 +25,15 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
 
+
   useEffect(() => {
     const fetchData = async () => {
       try {
         const [resUsers, resSessions] = await Promise.all([
-          fetch("http://localhost:5000/admin/users", {
+          fetch(`${import.meta.env.VITE_API_URL}/admin/users`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
-          fetch("http://localhost:5000/admin/sessions", {
+          fetch(`${import.meta.env.VITE_API_URL}/admin/sessions`, {
             headers: { Authorization: `Bearer ${token}` },
           }),
         ]);

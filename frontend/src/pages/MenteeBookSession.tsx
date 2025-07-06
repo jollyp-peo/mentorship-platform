@@ -20,7 +20,7 @@ export default function MenteeBookSession() {
   const fetchAvailability = async () => {
     if (!mentorId) return;
 
-    const res = await fetch(`http://localhost:5000/availability?mentorId=${mentorId}`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/availability?mentorId=${mentorId}`, {
       headers: { Authorization: `Bearer ${token}` },
     });
 
@@ -51,7 +51,7 @@ export default function MenteeBookSession() {
     slotDate.setSeconds(0);
 
     try {
-      const res = await fetch("http://localhost:5000/sessions", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/sessions`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

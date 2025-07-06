@@ -28,7 +28,7 @@ export default function SessionList() {
     if (!token) return;
 
     const fetchSessions = async () => {
-      const profileRes = await fetch("http://localhost:5000/users/me", {
+      const profileRes = await fetch(`${import.meta.env.VITE_API_URL}/users/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const profile = await profileRes.json();
@@ -36,8 +36,8 @@ export default function SessionList() {
 
       const endpoint =
         profile.role === "MENTEE"
-          ? "http://localhost:5000/sessions/mentee"
-          : "http://localhost:5000/sessions/mentor";
+          ? `${import.meta.env.VITE_API_URL}/sessions/mentee`
+          : `${import.meta.env.VITE_API_URL}/sessions/mentor`;
 
       const res = await fetch(endpoint, {
         headers: { Authorization: `Bearer ${token}` },
@@ -58,7 +58,7 @@ export default function SessionList() {
     const feedback = feedbackMap[sessionId];
     if (!feedback) return alert("Feedback is empty.");
 
-    const res = await fetch(`http://localhost:5000/sessions/${sessionId}/feedback`, {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/sessions/${sessionId}/feedback`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

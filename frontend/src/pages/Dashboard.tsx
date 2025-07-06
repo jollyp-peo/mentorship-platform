@@ -23,7 +23,7 @@ export default function Dashboard() {
     if (!token) return;
 
     const fetchProfile = async () => {
-      const res = await fetch("http://localhost:5000/users/me", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/users/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 

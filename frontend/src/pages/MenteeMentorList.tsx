@@ -23,7 +23,7 @@ export default function MenteeMentorList() {
   }, [selectedSkill]);
 
   const fetchMentors = async () => {
-    let url = "http://localhost:5000/users?role=MENTOR";
+    let url = `${import.meta.env.VITE_API_URL}/users?role=MENTOR`;
     if (selectedSkill) url += `&skill=${selectedSkill}`;
     const res = await fetch(url, {
       headers: { Authorization: `Bearer ${token}` },
@@ -33,7 +33,7 @@ export default function MenteeMentorList() {
   };
 
   const sendRequest = async (mentorId: number) => {
-    const res = await fetch("http://localhost:5000/requests", {
+    const res = await fetch(`${import.meta.env.VITE_API_URL}/requests`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

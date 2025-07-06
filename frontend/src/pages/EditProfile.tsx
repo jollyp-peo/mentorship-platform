@@ -17,7 +17,7 @@ export default function EditProfile() {
   useEffect(() => {
     const fetchProfile = async () => {
       const token = localStorage.getItem("token");
-      const res = await fetch("http://localhost:5000/users/me", {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/users/me`, {
         headers: { Authorization: `Bearer ${token}` },
       });
       const data = await res.json();
@@ -47,7 +47,7 @@ export default function EditProfile() {
 
   const handleSave = async () => {
     const token = localStorage.getItem("token");
-    const res = await fetch("http://localhost:5000/users/me/profile", {
+    const res = await fetch(`h${import.meta.env.VITE_API_URL}/users/me/profile`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",

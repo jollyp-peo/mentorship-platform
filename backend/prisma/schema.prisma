@@ -1,0 +1,77 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  firstName String
+  lastName  String
+  email     String   @unique
+  password  String
+  role      Role
+  bio       String?
+  skills    String? // array of strings
+  goals     String?
+
+  // Relations
+  mentorRequestsReceived Request[] @relation("MentorRequests")
+  menteeRequestsSent     Request[] @relation("MenteeRequests")
+  mentorSessions         Session[] @relation("MentorSessions")
+  menteeSessions         Session[] @relation("MenteeSessions")
+  availability Availability[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Request {
+  id         Int      @id @default(autoincrement())
+  status     RequestStatus @default(PENDING)
+
+  // Relations
+  mentor     User     @relation("MentorRequests", fields: [mentorId], references: [id])
+  mentorId   Int
+  mentee     User     @relation("MenteeRequests", fields: [menteeId], references: [id])
+  menteeId   Int
+
+  createdAt  DateTime @default(now())
+}
+
+model Session {
+  id          Int      @id @default(autoincrement())
+  mentor      User     @relation("MentorSessions", fields: [mentorId], references: [id])
+  mentorId    Int
+  mentee      User     @relation("MenteeSessions", fields: [menteeId], references: [id])
+  menteeId    Int
+  topic       String?  // ✅ This line must exist
+  feedback    String?
+  scheduledAt DateTime
+  createdAt   DateTime @default(now())
+}
+
+model Availability {
+  id        Int      @id @default(autoincrement())
+  mentor    User     @relation(fields: [mentorId], references: [id])
+  mentorId  Int
+  day       String
+  from      String   // e.g., "15:00"
+  to        String   // e.g., "17:00"
+  createdAt DateTime @default(now())
+}
+
+enum Role {
+  ADMIN
+  MENTOR
+  MENTEE
+}
+
+enum RequestStatus {
+  PENDING
+  ACCEPTED
+  REJECTED
+}

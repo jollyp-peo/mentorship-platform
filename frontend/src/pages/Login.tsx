@@ -54,6 +54,17 @@ export default function Login() {
         <button className="bg-green-600 text-white p-2 rounded w-full hover:bg-green-700">
           Login
         </button>
+
+        <p className="text-center">
+          Don't have an account?{" "}
+          <button
+            type="button"
+            onClick={() => navigate("/register")}
+            className="text-blue-600 hover:underline"
+          >
+            Create account
+          </button>
+        </p>
       </form>
     </div>
   );

@@ -25,7 +25,6 @@ export default function AdminDashboard() {
   const [loading, setLoading] = useState(true);
   const token = localStorage.getItem("token");
 
-
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -58,6 +57,32 @@ export default function AdminDashboard() {
     fetchData();
   }, [token]);
 
+  const deleteUser  = async (userId: number) => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/users/${userId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (response.ok) {
+      setUsers(users.filter(user => user.id !== userId));
+    } else {
+      console.error("Failed to delete user");
+    }
+  };
+
+  const deleteSession = async (sessionId: number) => {
+    const response = await fetch(`${import.meta.env.VITE_API_URL}/admin/sessions/${sessionId}`, {
+      method: 'DELETE',
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    if (response.ok) {
+      setSessions(sessions.filter(session => session.id !== sessionId));
+    } else {
+      console.error("Failed to delete session");
+    }
+  };
+
   return (
     <div className="flex min-h-screen bg-gray-100">
       <Sidebar />
@@ -71,14 +96,33 @@ export default function AdminDashboard() {
           <>
             <section>
               <h3 className="text-xl font-semibold mb-2">All Users</h3>
-              <ul className="bg-white p-4 rounded shadow space-y-2">
-                {users.map((u) => (
-                  <li key={u.id}>
-                    {u.firstName} {u.lastName} ({u.email}) —{" "}
-                    <span className="text-blue-700 font-medium">{u.role}</span>
-                  </li>
-                ))}
-              </ul>
+              <table className="min-w-full bg-white rounded shadow">
+                <thead>
+                  <tr>
+                    <th className="py-2 px-4 border-b">Name</th>
+                    <th className="py-2 px-4 border-b">Email</th>
+                    <th className="py-2 px-4 border-b">Role</th>
+                    <th className="py-2 px-4 border-b">Actions</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {users.map((u) => (
+                    <tr key={u.id}>
+                      <td className="py-2 px-4 border-b">{u.firstName} {u.lastName}</td>
+                      <td className="py-2 px-4 border-b">{u.email}</td>
+                      <td className="py-2 px-4 border-b">{u.role}</td>
+                      <td className="py-2 px-4 border-b">
+                        <button
+                          onClick={() => deleteUser (u.id)}
+                          className="text-red-600 hover:text-red-800"
+                        >
+                          Delete
+                        </button>
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
             </section>
 
             <section>
@@ -94,17 +138,21 @@ export default function AdminDashboard() {
                       {new Date(s.scheduledAt).toLocaleString()}
                     </div>
                     <div>
-                      <strong>Mentee:</strong> {s.mentee.firstName}{" "}
-                      {s.mentee.lastName}
+                      <strong>Mentee:</strong> {s.mentee.firstName} {s.mentee.lastName}
                     </div>
                     <div>
-                      <strong>Mentor:</strong> {s.mentor.firstName}{" "}
-                      {s.mentor.lastName}
+                      <strong>Mentor:</strong> {s.mentor.firstName} {s.mentor.lastName}
                     </div>
                     <div>
                       <strong>Feedback:</strong>{" "}
                       <em>{s.feedback || "Not provided"}</em>
                     </div>
+                    <button
+                      onClick={() => deleteSession(s.id)}
+                      className="text-red-600 hover:text-red-800"
+                    >
+                      Delete Session
+                    </button>
                   </li>
                 ))}
               </ul>
